@@ -25,7 +25,7 @@ jobs:
 
     - name: 🔍 Validate Build Output
       run: |
-        if [ ! -d "build" ]; then
+        if [ ! -d "dist" ]; then
           echo "Build folder not found! The build process failed."
           exit 1
         fi
