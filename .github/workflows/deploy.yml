@@ -1,0 +1,34 @@
+name: Deploy React App to Azure
+
+on:
+  push:
+    branches:
+      - main  # Sadece main branch değiştiğinde çalıştır
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🚀 GitHub Repo’yu Çek
+      uses: actions/checkout@v3
+
+    - name: 🏗️ Node.js Kur ve Bağımlılıkları Yükle
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: 📦 Projeyi Build Et
+      run: |
+        npm install
+        npm run build
+
+    - name: 📂 Build Dosyalarını ZIP’le
+      run: zip -r build.zip ./build
+
+    - name: 🚀 Azure Web App’e Deploy Et
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: "react-todo-app"  # Azure Web App adını buraya gir
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: build.zip
