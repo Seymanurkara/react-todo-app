@@ -3,32 +3,40 @@ name: Deploy React App to Azure
 on:
   push:
     branches:
-      - main  # Sadece main branch değiştiğinde çalıştır
+      - main  
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🚀 GitHub Repo’yu Çek
+    - name: 🚀 Checkout GitHub Repository
       uses: actions/checkout@v3
 
-    - name: 🏗️ Node.js Kur ve Bağımlılıkları Yükle
+    - name: 🏗️ Setup Node.js and Install Dependencies
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
+        node-version: '20.x'
 
-    - name: 📦 Projeyi Build Et
+    - name: 📦 Build the React App
       run: |
         npm install
         npm run build
 
-    - name: 📂 Build Dosyalarını ZIP’le
-      run: zip -r build.zip ./build
+    - name: 🔍 Validate Build Output
+      run: |
+        if [ ! -d "build" ]; then
+          echo "Build folder not found! The build process failed."
+          exit 1
+        fi
 
-    - name: 🚀 Azure Web App’e Deploy Et
+    - name: 📂 Archive Build Files
+      run: |
+        zip -r build.zip ./build
+
+    - name: 🚀 Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: "react-todo-app"  # Azure Web App adını buraya gir
+        app-name: "react-todo-app" 
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: build.zip
