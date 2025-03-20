@@ -1,45 +1,16 @@
 trigger:
-  branches:
-    include:
-      - main  # Sadece main branch değiştiğinde çalıştır
+- main
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-  # 1️⃣ Node.js 18.x Kurulumu (20.x yerine, projene uygun versiyonu kullan)
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '18.x'  # React projelerinde genellikle 18.x kullanılır
-    displayName: 'Install Node.js'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
 
-  # 2️⃣ Bağımlılıkları yükleme ve React uygulamasını build etme
-  - script: |
-      npm install
-      npm run build
-    displayName: 'npm install and build'
-
-  # 3️⃣ Build edilen dosyaları ZIP olarak arşivleme
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: "$(Build.SourcesDirectory)/dist"  # React build çıktısı dist klasörüne gidiyor olabilir
-      includeRootFolder: false
-      archiveType: "zip"
-      archiveFile: "$(Build.ArtifactStagingDirectory)/build.zip"
-      replaceExistingArchive: true
-    displayName: 'Archive Build Files'
-
-  # 4️⃣ Artefaktları Azure DevOps ile yayınlama (deployment için)
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: "$(Build.ArtifactStagingDirectory)/build.zip"
-      artifactName: "drop"
-    displayName: 'Publish Build Artifacts'
-
-  # 5️⃣ Azure Web App’e deploy etme
-  - task: AzureWebApp@1
-    inputs:
-      azureSubscription: "MyAzureServiceConnection"  # Azure DevOps'ta oluşturduğun servis bağlantısı
-      appName: "react-todo-app"  # Azure Web App adı
-      package: "$(Build.ArtifactStagingDirectory)/build.zip"
-    displayName: 'Deploy to Azure Web App'
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
