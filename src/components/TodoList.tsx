@@ -46,14 +46,14 @@ const TodoList: React.FC = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-            placeholder="Yeni bir görev ekleyin..."
+            placeholder="Add new task.."
           />
           <button
             onClick={handleAddTodo}
             className="bg-pink-500 text-white px-5 py-3 rounded-lg hover:bg-pink-700 transition-all flex items-center gap-2"
           >
             <FaPlus />
-            Ekle
+            Add
           </button>
         </div>
 
