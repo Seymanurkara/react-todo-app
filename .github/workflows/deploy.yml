@@ -25,19 +25,16 @@ jobs:
 
     - name: 🔍 Validate Build Output
       run: |
-        if [ ! -d "dist" ]; then
+        if [ ! -d "build" ]; then
           echo "Build folder not found! The build process failed."
           exit 1
         fi
 
-    - name: 🚀 Move build files to site root
-      run: |
-        mv build/* .
-
-
     - name: 📂 Archive Build Files
       run: |
-        zip -r build.zip ./build
+        cd build
+        zip -r ../build.zip .
+        cd ..
 
     - name: 🚀 Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
