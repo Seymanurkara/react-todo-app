@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5001"; // Ensure this matches your backend port
+const API_BASE = "https://react-todo-app-c5d9fqgcfba0gdaj.northeurope-01.azurewebsites.net";
 
 export async function fetchTodos() {
     const res = await fetch(`${API_BASE}/todos`);
