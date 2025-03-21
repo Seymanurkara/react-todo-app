@@ -30,6 +30,11 @@ jobs:
           exit 1
         fi
 
+    - name: 🚀 Move build files to site root
+      run: |
+        mv build/* .
+
+
     - name: 📂 Archive Build Files
       run: |
         zip -r build.zip ./build

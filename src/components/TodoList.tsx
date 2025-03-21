@@ -1,20 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
+import { fetchTodos, addTodo, deleteTodo } from "../api";
+
+interface Todo {
+  id: string;
+  task: string;
+}
 
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [input, setInput] = useState("");
 
-  const addTodo = () => {
+  // 🚀 Sayfa yüklendiğinde verileri getir
+  useEffect(() => {
+    fetchTodos().then(setTodos);
+  }, []);
+
+  // ✅ Yeni Todo Ekleme
+  const handleAddTodo = async () => {
     if (input.trim() !== "") {
-      setTodos([...todos, input]);
-      setInput("");
+      await addTodo(input);
+      setInput(""); // Input'u temizle
+      const updatedTodos = await fetchTodos(); // Güncellenmiş veriyi çek
+      setTodos(updatedTodos);
     }
   };
 
-  const removeTodo = (index: number) => {
-    const newTodos = todos.filter((_, i) => i !== index);
-    setTodos(newTodos);
+  // Todo Silme
+  const handleRemoveTodo = async (id: string) => {
+    await deleteTodo(id);
+    const updatedTodos = await fetchTodos();
+    setTodos(updatedTodos);
   };
 
   return (
@@ -33,7 +49,7 @@ const TodoList: React.FC = () => {
             placeholder="Yeni bir görev ekleyin..."
           />
           <button
-            onClick={addTodo}
+            onClick={handleAddTodo}
             className="bg-pink-500 text-white px-5 py-3 rounded-lg hover:bg-pink-700 transition-all flex items-center gap-2"
           >
             <FaPlus />
@@ -42,14 +58,14 @@ const TodoList: React.FC = () => {
         </div>
 
         <ul className="mt-6">
-          {todos.map((todo, index) => (
+          {todos.map((todo) => (
             <li
-              key={index}
+              key={todo.id}
               className="flex justify-between items-center bg-gray-100 p-3 my-2 rounded-lg shadow-md"
             >
-              <span className="text-lg font-medium">{todo}</span>
+              <span className="text-lg font-medium">{todo.task}</span>
               <button
-                onClick={() => removeTodo(index)}
+                onClick={() => handleRemoveTodo(todo.id)}
                 className="text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-700 transition-all flex items-center gap-2"
               >
                 <FaTrash />
