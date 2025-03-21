@@ -70,5 +70,5 @@ jobs:
         with:
           app-name: 'react-todo-app'
           slot-name: 'Production'
-          package: .
+          package: src/build.zip
           
