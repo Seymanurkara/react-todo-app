@@ -6,7 +6,7 @@ const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
   const [input, setInput] = useState("");
 
-  // Fetch todos when component mounts
+  // Load todos when the component mounts
   useEffect(() => {
     async function loadTodos() {
       try {
@@ -22,9 +22,10 @@ const TodoList: React.FC = () => {
   // Function to add a new todo
   const handleAddTodo = async () => {
     if (input.trim() === "") return;
+    
     try {
       const newTodo = await addTodo(input);
-      setTodos([...todos, newTodo]); // Add the new todo to the state
+      setTodos((prevTodos) => [...prevTodos, newTodo]); // Update state with new todo
       setInput(""); // Clear input field
     } catch (error) {
       console.error("Error adding todo:", error);
