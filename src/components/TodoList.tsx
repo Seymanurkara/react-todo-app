@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
-import { fetchTodos, addTodo, deleteTodo } from "../api"; // Import API functions
+import { fetchTodos, addTodo, deleteTodo } from "../api"; 
 
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
