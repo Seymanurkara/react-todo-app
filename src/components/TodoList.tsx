@@ -1,36 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
-import { fetchTodos, addTodo, deleteTodo } from "../api";
-
-interface Todo {
-  id: string;
-  task: string;
-}
+import { fetchTodos, addTodo, deleteTodo } from "../api"; // Import API functions
 
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
   const [input, setInput] = useState("");
 
-  // 🚀 Sayfa yüklendiğinde verileri getir
+  // Fetch todos when component mounts
   useEffect(() => {
-    fetchTodos().then(setTodos);
+    async function loadTodos() {
+      try {
+        const data = await fetchTodos();
+        setTodos(data);
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+      }
+    }
+    loadTodos();
   }, []);
 
-  // ✅ Yeni Todo Ekleme
+  // Function to add a new todo
   const handleAddTodo = async () => {
-    if (input.trim() !== "") {
-      await addTodo(input);
-      setInput(""); // Input'u temizle
-      const updatedTodos = await fetchTodos(); // Güncellenmiş veriyi çek
-      setTodos(updatedTodos);
+    if (input.trim() === "") return;
+    try {
+      const newTodo = await addTodo(input);
+      setTodos([...todos, newTodo]); // Add the new todo to the state
+      setInput(""); // Clear input field
+    } catch (error) {
+      console.error("Error adding todo:", error);
     }
   };
 
-  // Todo Silme
-  const handleRemoveTodo = async (id: string) => {
-    await deleteTodo(id);
-    const updatedTodos = await fetchTodos();
-    setTodos(updatedTodos);
+  // Function to delete a todo
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      await deleteTodo(id);
+      setTodos(todos.filter((todo) => todo.id !== id)); // Remove todo from state
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
   };
 
   return (
@@ -46,7 +54,7 @@ const TodoList: React.FC = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-            placeholder="Add new task.."
+            placeholder="Enter a new task..."
           />
           <button
             onClick={handleAddTodo}
@@ -65,11 +73,11 @@ const TodoList: React.FC = () => {
             >
               <span className="text-lg font-medium">{todo.task}</span>
               <button
-                onClick={() => handleRemoveTodo(todo.id)}
+                onClick={() => handleDeleteTodo(todo.id)}
                 className="text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-700 transition-all flex items-center gap-2"
               >
                 <FaTrash />
-                Sil
+                Delete
               </button>
             </li>
           ))}

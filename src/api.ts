@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000"; 
+const API_BASE = "http://localhost:5001"; // Ensure this matches your backend port
 
 export async function fetchTodos() {
     const res = await fetch(`${API_BASE}/todos`);
@@ -6,11 +6,13 @@ export async function fetchTodos() {
 }
 
 export async function addTodo(task: string) {
-    await fetch(`${API_BASE}/todos`, {
+    const res = await fetch(`${API_BASE}/todos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ task }),
     });
+
+    return res.json(); // Ensure the response is returned
 }
 
 export async function deleteTodo(id: string) {
