@@ -4,7 +4,7 @@ export async function fetchTodos() {
   const res = await fetch(`${API_BASE}/todos`);
 
   if (!res.ok) {
-    throw new Error("Failed to fetch todos");
+    throw new Error(`Failed to fetch todos: ${res.statusText}`);
   }
 
   return res.json();
@@ -18,7 +18,7 @@ export async function addTodo(task: string) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to add todo");
+    throw new Error(`Failed to add todo: ${res.statusText}`);
   }
 
   return res.json();
@@ -30,6 +30,6 @@ export async function deleteTodo(id: string) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to delete todo");
+    throw new Error(`Failed to delete todo: ${res.statusText}`);
   }
 }
