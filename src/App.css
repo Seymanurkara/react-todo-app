@@ -5,19 +5,26 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background: linear-gradient(to right, #ffecd2, #fcb69f); /* Canlı arka plan geçişi */
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(255, 99, 132, 0.3);
 }
 
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
-  transition: filter 300ms;
+  transition: filter 300ms, transform 300ms;
+  border-radius: 1rem;
 }
+
 .logo:hover {
-  filter: drop-shadow( 0 2em #3941d3aa);
+  filter: drop-shadow(0 2em #3b82f6aa); /* canlı mavi ton */
+  transform: scale(1.05);
 }
+
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #a8279faa);
+  filter: drop-shadow(0 0 2em #e11d48aa); /* canlı pembe/kırmızı ton */
 }
 
 @keyframes logo-spin {
@@ -37,8 +44,23 @@
 
 .card {
   padding: 2em;
+  background-color: #fdf2f8;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.15); /* pembemsi gölge */
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(236, 72, 153, 0.25);
 }
 
 .read-the-docs {
-  color: rgb(56, 32, 152);
+  color: #9333ea; /* canlı mor */
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.read-the-docs:hover {
+  color: #7c3aed; /* koyu mor ton */
 }

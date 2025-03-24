@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Segoe UI', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(227, 198, 113, 0.87);
-  background-color: #242424;
+  color: #facc15; /* Sarı tonu */
+  background-color: #1e1b4b; /* Koyu mormsu arka plan */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,55 +16,87 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  font-weight: 600;
+  color: #4ade80; /* Canlı yeşil */
+  text-decoration: none;
+  transition: color 0.3s;
 }
 a:hover {
-  color: #535bf2;
+  color: #22c55e; /* Daha koyu yeşil */
 }
 
 body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
+  background: radial-gradient(circle at top left, #1e3a8a, #4c1d95);
+  background-attachment: fixed;
+  color: #fefce8;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #fcd34d; /* Sarımsı başlık */
+  text-shadow: 2px 2px 8px #fbbf24aa;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  padding: 0.6em 1.4em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #c3712e;
+  background-color: #10b981; /* Canlı yeşil */
+  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: #059669;
+  border-color: #34d399;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 3px solid #22d3ee;
+  outline-offset: 2px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #1e293b;
+    background-color: #f8fafc;
+  }
+
+  body {
+    background: linear-gradient(to bottom right, #a5f3fc, #fcd34d);
+    color: #1f2937;
+  }
+
+  a {
+    color: #3b82f6;
   }
   a:hover {
-    color: #747bff;
+    color: #2563eb;
   }
+
   button {
-    background-color: #47cb6d;
+    background-color: #f97316; /* Canlı turuncu */
+    color: white;
+    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+  }
+
+  button:hover {
+    background-color: #ea580c;
+    box-shadow: 0 6px 14px rgba(249, 115, 22, 0.5);
   }
 }

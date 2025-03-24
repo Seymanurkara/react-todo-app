@@ -41,7 +41,7 @@ const TodoList: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
       <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4" data-testid="heading">
+        <h2 className="text-3xl font-bold text-indigo-700 text-center mb-4" data-testid="heading">
           📝 Todo List
         </h2>
 
@@ -50,7 +50,7 @@ const TodoList: React.FC = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="flex-grow p-3 border border-blue-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter a new task..."
           />
           <button
@@ -66,9 +66,9 @@ const TodoList: React.FC = () => {
           {todos.map((todo) => (
             <li
               key={todo.id}
-              className="flex justify-between items-center bg-gray-100 p-3 my-2 rounded-lg shadow-md"
+              className="flex justify-between items-center bg-yellow-100 p-3 my-2 rounded-lg shadow-md"
             >
-              <span className="text-lg font-medium">{todo.task}</span>
+              <span className="text-lg font-medium text-purple-800">{todo.task}</span>
               <button
                 onClick={() => handleDeleteTodo(todo.id)}
                 className="text-white bg-green-500 px-3 py-2 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
