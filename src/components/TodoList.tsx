@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
-import { fetchTodos, addTodo, deleteTodo } from "../api";
+import { fetchTodos, addTodo, deleteTodo } from "../api"; 
 
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
@@ -22,7 +22,7 @@ const TodoList: React.FC = () => {
     if (input.trim() === "") return;
     try {
       const newTodo = await addTodo(input);
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
+      setTodos((prev) => [...prev, newTodo]);
       setInput("");
     } catch (error) {
       console.error("Error adding todo:", error);
@@ -50,15 +50,15 @@ const TodoList: React.FC = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter a new task..."
-            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <button
             onClick={handleAddTodo}
-            className="bg-pink-500 text-white px-5 py-3 rounded-lg hover:bg-pink-700 transition-all flex items-center gap-2"
+            className="bg-green-500 text-white px-5 py-3 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
           >
-            <FaPlus aria-hidden="true" />
-            <span>Add</span>
+            <FaPlus />
+            Add
           </button>
         </div>
 
@@ -68,14 +68,13 @@ const TodoList: React.FC = () => {
               key={todo.id}
               className="flex justify-between items-center bg-gray-100 p-3 my-2 rounded-lg shadow-md"
             >
-              <span>{todo.task}</span>
+              <span className="text-lg font-medium">{todo.task}</span>
               <button
                 onClick={() => handleDeleteTodo(todo.id)}
-                className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition-all flex items-center gap-2"
-                aria-label={`Delete ${todo.task}`}
+                className="text-white bg-green-500 px-3 py-2 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
               >
-                <FaTrash aria-hidden="true" />
-                <span>Delete</span>
+                <FaTrash />
+                Delete
               </button>
             </li>
           ))}
