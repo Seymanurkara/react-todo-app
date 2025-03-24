@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
-import { fetchTodos, addTodo, deleteTodo } from "../api"; 
+import { fetchTodos, addTodo, deleteTodo } from "../api";
 
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
   const [input, setInput] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadTodos() {
@@ -19,13 +20,20 @@ const TodoList: React.FC = () => {
   }, []);
 
   const handleAddTodo = async () => {
-    if (input.trim() === "") return;
+    const trimmedInput = input.trim();
+    if (trimmedInput === "") {
+      setError("Task cannot be empty.");
+      return;
+    }
+
     try {
-      const newTodo = await addTodo(input);
+      const newTodo = await addTodo(trimmedInput);
       setTodos((prev) => [...prev, newTodo]);
       setInput("");
+      setError("");
     } catch (error) {
       console.error("Error adding todo:", error);
+      setError("Something went wrong. Try again.");
     }
   };
 
@@ -35,6 +43,12 @@ const TodoList: React.FC = () => {
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddTodo();
     }
   };
 
@@ -50,17 +64,24 @@ const TodoList: React.FC = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="flex-grow p-3 border border-blue-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter a new task..."
           />
           <button
             onClick={handleAddTodo}
-            className="bg-green-500 text-white px-5 py-3 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
+            className="bg-orange-500 text-white px-5 py-3 rounded-lg hover:bg-orange-600 transition-all flex items-center gap-2 shadow-lg"
           >
             <FaPlus />
             Add
           </button>
         </div>
+
+        {error && (
+          <p className="text-red-500 text-sm mt-2" data-testid="error-message">
+            {error}
+          </p>
+        )}
 
         <ul className="mt-6">
           {todos.map((todo) => (

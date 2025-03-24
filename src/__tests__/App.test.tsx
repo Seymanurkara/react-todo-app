@@ -2,15 +2,16 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import TodoList from "../components/TodoList";
 
-// Mock veri
+// Mock-data
 const mockTodos = [{ id: "1", task: "Test Todo" }];
 
 beforeEach(() => {
   globalThis.fetch = vi.fn((_, options) => {
     if (options?.method === "POST") {
+      const body = JSON.parse(options.body as string);
       return Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({ id: "2", task: "Test Todo" }),
+        json: () => Promise.resolve({ id: "2", task: body.task }),
       });
     }
 
@@ -20,7 +21,7 @@ beforeEach(() => {
 
     return Promise.resolve({
       ok: true,
-      json: () => Promise.resolve(mockTodos),
+      json: () => Promise.resolve([{ id: "1", task: "Test Todo" }]),
     });
   }) as any;
 });
@@ -31,7 +32,13 @@ describe("TodoList component", () => {
     expect(screen.getByTestId("heading")).toBeInTheDocument();
   });
 
-  it("adds a new todo", async () => {
+  it("renders heading with correct text", () => {
+    render(<TodoList />);
+    const heading = screen.getByTestId("heading");
+    expect(heading).toHaveTextContent(/todo list/i);
+  });
+
+  it("adds a new todo via Add button", async () => {
     render(<TodoList />);
     const input = screen.getByPlaceholderText(/Enter a new task/i);
     const addButton = screen.getByText(/Add/i);
@@ -43,6 +50,25 @@ describe("TodoList component", () => {
     expect(items[0]).toBeInTheDocument();
   });
 
+  it("adds a new todo with Enter key", async () => {
+    render(<TodoList />);
+    const input = screen.getByPlaceholderText(/Enter a new task/i);
+  
+    fireEvent.change(input, { target: { value: "New Task with Enter" } });
+    fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+  
+    const newItem = await screen.findByText("New Task with Enter");
+    expect(newItem).toBeInTheDocument();
+  });
+  
+  it("renders heading", async () => {
+    await waitFor(() => {
+      render(<TodoList />);
+    });
+    expect(screen.getByTestId("heading")).toBeInTheDocument();
+  });
+
+  
   it("deletes a todo", async () => {
     render(<TodoList />);
     const input = screen.getByPlaceholderText(/Enter a new task/i);
