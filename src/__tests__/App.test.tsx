@@ -27,11 +27,6 @@ beforeEach(() => {
 });
 
 describe("TodoList component", () => {
-  it("renders heading", () => {
-    render(<TodoList />);
-    expect(screen.getByTestId("heading")).toBeInTheDocument();
-  });
-
   it("renders heading with correct text", () => {
     render(<TodoList />);
     const heading = screen.getByTestId("heading");
@@ -61,14 +56,6 @@ describe("TodoList component", () => {
     expect(newItem).toBeInTheDocument();
   });
   
-  it("renders heading", async () => {
-    await waitFor(() => {
-      render(<TodoList />);
-    });
-    expect(screen.getByTestId("heading")).toBeInTheDocument();
-  });
-
-  
   it("deletes a todo", async () => {
     render(<TodoList />);
     const input = screen.getByPlaceholderText(/Enter a new task/i);
@@ -82,7 +69,7 @@ describe("TodoList component", () => {
 
     await waitFor(() => {
       const remainingItems = screen.queryAllByText("Test Todo");
-      expect(remainingItems.length).toBeLessThan(2);
+      expect(remainingItems.length).toBe(0); // Ensuring that the todo has been deleted
     });
   });
 });
