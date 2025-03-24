@@ -6,7 +6,7 @@ import TodoList from "../components/TodoList";
 const mockTodos = [{ id: "1", task: "Test Todo" }];
 
 beforeEach(() => {
-  global.fetch = vi.fn((url, options) => {
+  globalThis.fetch = vi.fn((_, options) => {
     if (options?.method === "POST") {
       return Promise.resolve({
         ok: true,
