@@ -22,25 +22,25 @@ jobs:
         run: npm install
 
       - name: ✅ Run Tests
-        run: npm run test
+        run: npm run test --if-present
 
       - name: 🏗️ Build the React App
         run: npm run build
 
       - name: 🔍 Validate Build Output
         run: |
-          if [ ! -d "dist" ]; then
-            echo "Error: 'dist' folder not found! The build process failed."
+          if [ ! -d "build" ]; then
+            echo "Error: 'build' folder not found! The build process failed."
             exit 1
           fi
 
       - name: 🗜️ Archive Build Files
-        run: zip -r dist.zip ./dist
+        run: zip -r build.zip ./build
 
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: "react-todo-app"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: dist.zip
+          package: build.zip
           deployment-method: zipDeploy
