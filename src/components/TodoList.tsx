@@ -5,7 +5,6 @@ import { fetchTodos, addTodo, deleteTodo } from "../api";
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<{ id: string; task: string }[]>([]);
   const [input, setInput] = useState("");
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadTodos() {
@@ -21,19 +20,13 @@ const TodoList: React.FC = () => {
 
   const handleAddTodo = async () => {
     const trimmedInput = input.trim();
-    if (trimmedInput === "") {
-      setError("Task cannot be empty.");
-      return;
-    }
-
+    if (trimmedInput === "") return;
     try {
       const newTodo = await addTodo(trimmedInput);
       setTodos((prev) => [...prev, newTodo]);
       setInput("");
-      setError("");
     } catch (error) {
       console.error("Error adding todo:", error);
-      setError("Something went wrong. Try again.");
     }
   };
 
@@ -70,18 +63,12 @@ const TodoList: React.FC = () => {
           />
           <button
             onClick={handleAddTodo}
-            className="bg-orange-500 text-white px-5 py-3 rounded-lg hover:bg-orange-600 transition-all flex items-center gap-2 shadow-lg"
+            className="bg-green-500 text-white px-5 py-3 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
           >
             <FaPlus />
             Add
           </button>
         </div>
-
-        {error && (
-          <p className="text-red-500 text-sm mt-2" data-testid="error-message">
-            {error}
-          </p>
-        )}
 
         <ul className="mt-6">
           {todos.map((todo) => (
